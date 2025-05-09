@@ -1,0 +1,20 @@
+[
+	{
+		"id": "frontend-faceoff",
+		"title": "42 Abu Dhabi Frontend Faceoff",
+		"date": "2025-06-01",
+		"description": "Vibe coding."
+	},
+	{
+		"id": "tech-talk",
+		"title": "Tech Talk: AI & Ethics",
+		"date": "2025-06-10",
+		"description": "A discussion on responsible AI development."
+	},
+	{
+		"id": "react-bootcamp",
+		"title": "React Bootcamp",
+		"date": "2025-07-01",
+		"description": "Intensive training in frontend development."
+	}
+]
