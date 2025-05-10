@@ -15,6 +15,7 @@ export default function AdminEditEventPage() {
 	const [date, setDate] = useState("");
 	const [description, setDescription] = useState("");
 	const [loading, setLoading] = useState(true);
+	const [confirmOpen, setConfirmOpen] = useState(false);
 
 	useEffect(() => {
 		const fetchEvent = async () => {
@@ -50,7 +51,7 @@ export default function AdminEditEventPage() {
 		router.push(`/events/${id}`);
 	};
 
-	const handleDelete = async () => {
+	const handleDeleteConfirmed = async () => {
 		await supabase.from("events").delete().eq("id", id);
 		router.push("/");
 	};
@@ -59,7 +60,7 @@ export default function AdminEditEventPage() {
 	if (!event) return <p className="p-6 text-red-500">Event not found.</p>;
 
 	return (
-		<div className="p-6 max-w-3xl mx-auto">
+		<div className="p-6 max-w-3xl mx-auto relative">
 			<h1 className="text-2xl font-bold mb-4">Edit Event</h1>
 
 			<div className="space-y-4">
@@ -106,13 +107,41 @@ export default function AdminEditEventPage() {
 						Discard
 					</button>
 					<button
-						onClick={handleDelete}
+						onClick={() => setConfirmOpen(true)}
 						className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 ml-auto"
 					>
 						Delete
 					</button>
 				</div>
 			</div>
+
+			{/* Delete confirmation modal */}
+			{confirmOpen && (
+				<div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
+					<div className="bg-white p-6 rounded shadow-lg max-w-sm w-full">
+						<h2 className="text-lg font-semibold mb-4">
+							Confirm Deletion
+						</h2>
+						<p className="mb-4">
+							Are you sure you want to delete this event?
+						</p>
+						<div className="flex justify-end gap-4">
+							<button
+								onClick={() => setConfirmOpen(false)}
+								className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+							>
+								Cancel
+							</button>
+							<button
+								onClick={handleDeleteConfirmed}
+								className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+							>
+								Delete
+							</button>
+						</div>
+					</div>
+				</div>
+			)}
 		</div>
 	);
 }
