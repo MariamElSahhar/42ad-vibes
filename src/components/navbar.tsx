@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "@/utils/supabase";
+import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function Navbar() {
+	const supabase = createClient();
+
 	const router = useRouter();
 	const [userEmail, setUserEmail] = useState<string | null>(null);
 	const [role, setRole] = useState<string | null>(null);
@@ -41,7 +43,9 @@ export default function Navbar() {
 	return (
 		<nav className="bg-blue-300 py-4">
 			<div className="container mx-auto flex justify-between items-center px-4">
-				<h1 className="text-2xl font-semibold">42AD Vibes</h1>
+				<Link href="/" className="text-2xl font-semibold">
+					42AD Vibes
+				</Link>
 
 				<div className="relative text-sm space-x-4">
 					{userEmail ? (

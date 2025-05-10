@@ -1,31 +1,72 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
+import { createClient } from "@/utils/supabase/client";
 import { Event } from "@/types/types";
-import { supabase } from "@/utils/supabase";
 
-const getEventById = async (id: string): Promise<Event | undefined> => {
-	const { data: events } = await supabase.from("events").select();
+export default function EventDetailsPage() {
+	const { id } = useParams<{ id: string }>();
+	const supabase = createClient();
+	const [event, setEvent] = useState<Event | null>(null);
+	const [isAdmin, setIsAdmin] = useState(false);
+	const [loading, setLoading] = useState(true);
 
-	return events?.find((event) => event.id === id);
-};
+	useEffect(() => {
+		const fetchData = async () => {
+			const {
+				data: { session },
+			} = await supabase.auth.getSession();
+			const user = session?.user;
 
-export default async function EventDetails({
-	params,
-}: {
-	params: Promise<{ id: string }>;
-}) {
-	const id = (await params).id;
-	const event = id ? await getEventById(id as string) : undefined;
+			if (user) {
+				const { data: roleData } = await supabase
+					.from("roles")
+					.select("role")
+					.eq("id", user.id)
+					.single();
+
+				setIsAdmin(roleData?.role === "admin");
+			}
+
+			const { data } = await supabase
+				.from("events")
+				.select("*")
+				.eq("id", id)
+				.single();
+
+			setEvent(data ?? null);
+			setLoading(false);
+		};
+
+		fetchData();
+	}, [id]);
+
+	if (loading) {
+		return <p className="p-6 text-gray-500">Loading event...</p>;
+	}
 
 	if (!event) {
-		return <p>Event not found.</p>;
+		return <p className="p-6 text-red-500">Event not found.</p>;
 	}
 
 	return (
-		<div className="container mx-auto p-4">
-			<h1 className="text-3xl font-bold">{event.title}</h1>
+		<div className="p-6 max-w-4xl mx-auto">
+			<h1 className="text-3xl font-bold mb-2">{event.title}</h1>
 			<p className="text-gray-500">{event.date}</p>
 			<div className="mt-4">
 				<p>{event.description}</p>
 			</div>
+
+			{isAdmin && (
+				<Link
+					href={`/admin/events/${event.id}`}
+					className="mt-6 inline-block bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
+				>
+					Manage
+				</Link>
+			)}
 		</div>
 	);
 }
