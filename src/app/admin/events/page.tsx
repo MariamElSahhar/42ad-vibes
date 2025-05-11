@@ -1,39 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import EventCards from "@/components/event-cards";
 import { Plus } from "lucide-react";
+import Link from "next/link";
 
 export default function ManageEventsPage() {
 	const supabase = createClient();
-	const [isAdmin, setIsAdmin] = useState(false);
 	const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 	const [newEventTitle, setNewEventTitle] = useState("");
 	const [newEventDate, setNewEventDate] = useState("");
 	const [newEventDescription, setNewEventDescription] = useState("");
-
-	useEffect(() => {
-		const fetchData = async () => {
-			// Get the session and check if the user is an admin
-			const {
-				data: { session },
-			} = await supabase.auth.getSession();
-			const user = session?.user;
-
-			if (user) {
-				const { data: roleData } = await supabase
-					.from("roles")
-					.select("role")
-					.eq("id", user.id)
-					.single();
-
-				setIsAdmin(roleData?.role === "admin");
-			}
-		};
-
-		fetchData();
-	}, [supabase]);
 
 	const handleCreateEvent = async () => {
 		const { error } = await supabase.from("events").insert([
@@ -59,18 +37,24 @@ export default function ManageEventsPage() {
 	};
 
 	return (
-		<div className="p-6 max-w-4xl mx-auto">
+		<div className="p-6 mx-6">
 			<div className="flex items-center justify-between mb-4">
 				<h1 className="text-3xl font-normal">Upcoming Events</h1>
-				{isAdmin && (
+				<div className="flex gap-2">
+					<Link
+						href="/"
+						className="px-3 py-2 rounded bg-white/10 border border-white/30 hover:bg-white/20 transition text-white"
+					>
+						Public View
+					</Link>
 					<button
 						onClick={() => setIsCreateModalOpen(true)}
-						className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md border border-blue-800 text-gray-300 hover:bg-blue-900 transition cursor-pointer"
+						className="flex items-center gap-1 px-3 py-2 rounded bg-purple-600/30 border border-purple-700 hover:bg-purple-700 transition text-white"
 					>
 						<Plus className="w-4 h-4" />
 						Add Event
 					</button>
-				)}
+				</div>
 			</div>
 			<EventCards />
 

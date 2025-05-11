@@ -19,6 +19,20 @@ export default function SignUpPage() {
 		setLoading(true);
 		setErrorMsg("");
 
+		if (!username || !email || !password || !confirmPassword) {
+			setErrorMsg("Please enter all fields.");
+			setLoading(false);
+			return;
+		}
+
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+		if (!emailRegex.test(email)) {
+			setErrorMsg("Please enter a valid email address.");
+			setLoading(false);
+			return;
+		}
+
 		if (password !== confirmPassword) {
 			setErrorMsg("Passwords do not match");
 			setLoading(false);
@@ -46,7 +60,7 @@ export default function SignUpPage() {
 		<div className="flex flex-col flex-1 justify-center items-center w-full h-full px-4 py-8">
 			<div className="w-full max-w-md p-8 rounded-2xl backdrop-blur-md bg-white/5 shadow-2xl border border-white/10">
 				<h1 className="text-3xl  font-medium text-white text-center mb-6">
-					Create Account
+					Create Account 🚀
 				</h1>
 
 				<form onSubmit={handleSignUp} className="space-y-4">
@@ -56,7 +70,6 @@ export default function SignUpPage() {
 						</label>
 						<input
 							type="text"
-							required
 							value={username}
 							onChange={(e) => setUsername(e.target.value)}
 							className="w-full px-3 py-2 rounded-md bg-white/10 text-white border border-white/20 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -68,8 +81,7 @@ export default function SignUpPage() {
 							Email
 						</label>
 						<input
-							type="email"
-							required
+							type="text"
 							value={email}
 							onChange={(e) => setEmail(e.target.value)}
 							className="w-full px-3 py-2 rounded-md bg-white/10 text-white border border-white/20 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -82,7 +94,6 @@ export default function SignUpPage() {
 						</label>
 						<input
 							type="password"
-							required
 							value={password}
 							onChange={(e) => setPassword(e.target.value)}
 							className="w-full px-3 py-2 rounded-md bg-white/10 text-white border border-white/20 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -95,7 +106,6 @@ export default function SignUpPage() {
 						</label>
 						<input
 							type="password"
-							required
 							value={confirmPassword}
 							onChange={(e) => setConfirmPassword(e.target.value)}
 							className="w-full px-3 py-2 rounded-md bg-white/10 text-white border border-white/20 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -103,7 +113,7 @@ export default function SignUpPage() {
 					</div>
 
 					{errorMsg && (
-						<p className="text-sm text-red-500 bg-red-900/20 px-3 py-2 rounded-md">
+						<p className="text-sm text-orange-200 bg-orange-950/80 p-2 rounded">
 							{errorMsg}
 						</p>
 					)}

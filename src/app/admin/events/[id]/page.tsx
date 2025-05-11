@@ -59,7 +59,7 @@ export default function AdminEditEventPage() {
 	if (!event) return <p className="p-6 text-red-500">Event not found.</p>;
 
 	return (
-		<div className="p-6 max-w-3xl mx-auto relative text-white">
+		<div className="relative p-6 max-w-4xl mx-auto text-white">
 			{/* 💫 Background blobs */}
 			<div className="absolute inset-0 -z-10">
 				<div className="absolute w-96 h-96 bg-purple-600 opacity-30 rounded-full blur-3xl top-0 left-0 animate-pulse slow" />

@@ -56,7 +56,7 @@ export default function HomePage() {
 	}, []);
 
 	return (
-		<div className="p-6 max-w-4xl mx-auto">
+		<div className="p-6 mx-6">
 			<div className="flex items-center justify-between mb-4">
 				<h1 className="text-3xl font-normal">Upcoming Events</h1>
 				{isAdmin && (

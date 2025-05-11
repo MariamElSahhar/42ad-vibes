@@ -19,6 +19,20 @@ export default function LoginPage() {
 		setLoading(true);
 		setErrorMsg("");
 
+		if (!email || !password) {
+			setErrorMsg("Please enter both email and password.");
+			setLoading(false);
+			return;
+		}
+
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+		if (!emailRegex.test(email)) {
+			setErrorMsg("Please enter a valid email address.");
+			setLoading(false);
+			return;
+		}
+
 		const { error } = await supabase.auth.signInWithPassword({
 			email,
 			password,
@@ -46,8 +60,7 @@ export default function LoginPage() {
 							Email
 						</label>
 						<input
-							type="email"
-							required
+							type="text"
 							className="w-full bg-black border border-white/10 px-3 py-2 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
 							value={email}
 							onChange={(e) => setEmail(e.target.value)}
@@ -60,7 +73,6 @@ export default function LoginPage() {
 						</label>
 						<input
 							type="password"
-							required
 							className="w-full bg-black border border-white/10 px-3 py-2 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
 							value={password}
 							onChange={(e) => setPassword(e.target.value)}
@@ -68,7 +80,7 @@ export default function LoginPage() {
 					</div>
 
 					{errorMsg && (
-						<p className="text-sm text-red-400 bg-red-950 p-2 rounded">
+						<p className="text-sm text-orange-200 bg-orange-950/80 p-2 rounded">
 							{errorMsg}
 						</p>
 					)}

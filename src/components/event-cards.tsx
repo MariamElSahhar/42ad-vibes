@@ -88,17 +88,16 @@ export default function EventCards() {
 
 							<div className="flex items-start gap-2">
 								<div>
-									<div className="flex items-center gap-2">
-										<h2 className="font-semibold text-base text-white">
+									<Link
+										href={`/events/${event.id}`}
+										className="group flex items-center justify-between gap-2 transition"
+									>
+										<h2 className="font-semibold text-base text-white group-hover:underline">
 											{event.title}
 										</h2>
-										<Link
-											href={`/events/${event.id}`}
-											className="text-blue-500 hover:text-blue-600"
-										>
-											<ArrowRight className="w-4 h-4" />
-										</Link>
-									</div>
+
+										<ArrowRight className="w-5 h-5 text-blue-400 group-hover:text-blue-300 group-hover:translate-x-2 transition-transform duration-200" />
+									</Link>
 									<p className="text-sm text-gray-400 flex items-center gap-1">
 										<Calendar className="w-4 h-4" />
 										{event.date}
