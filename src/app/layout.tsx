@@ -19,7 +19,7 @@ export default function RootLayout({
 				<AuthProvider>
 					<Navbar />
 					<main className="vh-full">{children}</main>
-					<footer className="bg-gray-100 text-center py-4 mt-8 text-sm text-gray-500">
+					<footer className="text-center py-4 mt-8 text-sm">
 						Created by Mariam ✨
 					</footer>
 				</AuthProvider>

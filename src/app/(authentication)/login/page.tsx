@@ -32,8 +32,8 @@ export default function LoginPage() {
 	};
 
 	return (
-		<div className="flex items-center justify-center min-h-screen bg-blue-50">
-			<div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
+		<div className="flex items-center justify-center min-h-screen">
+			<div className="rounded-2xl shadow-xl p-8 w-full max-w-md">
 				<h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
 
 				<form onSubmit={handleLogin} className="space-y-4">
@@ -72,12 +72,12 @@ export default function LoginPage() {
 					<button
 						type="submit"
 						disabled={loading}
-						className="w-full py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+						className="w-full py-2 bg-blue-600rounded-md hover:bg-blue-700"
 					>
 						{loading ? (
 							<span className="flex justify-center items-center">
 								<svg
-									className="animate-spin h-5 w-5 mr-2 text-white"
+									className="animate-spin h-5 w-5 mr-2 "
 									viewBox="0 0 24 24"
 								>
 									<circle

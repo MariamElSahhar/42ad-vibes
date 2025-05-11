@@ -78,7 +78,7 @@ export default function HomePage() {
 				<div className="mb-4">
 					<Link
 						href="/admin/events"
-						className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+						className="bg-blue-500 text-black px-4 py-2 rounded hover:bg-blue-700"
 					>
 						Manage Events
 					</Link>
