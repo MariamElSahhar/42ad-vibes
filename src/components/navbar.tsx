@@ -37,16 +37,21 @@ export default function Navbar() {
 	};
 
 	return (
-		<nav className="py-4" ref={menuRef}>
+		<nav
+			className="bg-blue-900/10 backdrop-blur-md border-b border-white/10 text-white sticky top-0 z-50 shadow-sm py-5"
+			ref={menuRef}
+		>
 			<div className="container mx-auto flex justify-between items-center px-4">
-				<Link href="/" className="text-2xl font-semibold">
+				<Link
+					href="/"
+					className="text-2xl font-bold tracking-wide hover:text-purple/90 transition"
+				>
 					42AD Vibes
 				</Link>
 
 				<div className="relative text-sm space-x-4">
 					{user ? (
 						<div className="relative inline-block text-left">
-							{/* User Button */}
 							<button
 								onClick={() => setMenuOpen((prev) => !prev)}
 								className="flex items-center px-4 py-2 text-white cursor-pointer"
@@ -81,21 +86,29 @@ export default function Navbar() {
 											: "translateY(10px)",
 									}}
 								>
-									<button
-										onClick={handleSignOut}
-										className="block w-full text-left px-4 py-2 bg-gray-800 text-white hover:bg-gray-700 cursor-pointer"
-									>
-										Sign Out
-									</button>
+									<div className="absolute right-0 mt-2 w-36 bg-orange-400/90 backdrop-blur-md rounded-md shadow-lg ring-1 ring-white/20 z-50 hover:bg-orange-500/90 transition">
+										<button
+											onClick={handleSignOut}
+											className="block w-full text-left px-4 py-2 text-white transition"
+										>
+											Sign Out
+										</button>
+									</div>
 								</div>
 							)}
 						</div>
 					) : (
 						<>
-							<Link href="/login" className="hover:underline">
+							<Link
+								href="/login"
+								className="px-4 py-2 rounded-xl font-medium text-white bg-gradient-to-r from-[#6C63FF] to-[#9A6BFF] hover:brightness-130 transition"
+							>
 								Login
 							</Link>
-							<Link href="/signup" className="hover:underline">
+							<Link
+								href="/signup"
+								className="px-4 py-2 rounded-xl font-medium text-[#6C63FF] border border-[#6C63FF] hover:bg-[#6C63FF] hover:text-white transition"
+							>
 								Sign Up
 							</Link>
 						</>

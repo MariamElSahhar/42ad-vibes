@@ -3,12 +3,11 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/client";
-import { Event } from "@/types/types";
+import EventCards from "@/components/event-cards";
+import { Settings } from "lucide-react";
 
 export default function HomePage() {
-	const [events, setEvents] = useState<Event[]>([]);
 	const [isAdmin, setIsAdmin] = useState(false);
-	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		const supabase = createClient();
@@ -30,19 +29,10 @@ export default function HomePage() {
 			} else {
 				setIsAdmin(false);
 			}
-
-			const { data: eventData } = await supabase
-				.from("events")
-				.select("*")
-				.order("date");
-
-			setEvents(eventData ?? []);
-			setLoading(false);
 		};
 
 		fetchData();
 
-		// 🔁 Listen for auth state changes
 		const { data: authListener } = supabase.auth.onAuthStateChange(
 			(event, session) => {
 				if (event === "SIGNED_OUT") {
@@ -65,52 +55,21 @@ export default function HomePage() {
 		};
 	}, []);
 
-	if (loading) {
-		return <p className="p-6 text-gray-500">Loading events...</p>;
-	}
-
 	return (
 		<div className="p-6 max-w-4xl mx-auto">
-			<h1 className="text-3xl font-bold mb-4">Upcoming Events</h1>
-
-			{/* Admin-only "Manage Events" button */}
-			{isAdmin && (
-				<div className="mb-4">
+			<div className="flex items-center justify-between mb-4">
+				<h1 className="text-3xl font-normal">Upcoming Events</h1>
+				{isAdmin && (
 					<Link
 						href="/admin/events"
-						className="bg-blue-500 text-black px-4 py-2 rounded hover:bg-blue-700"
+						className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md border border-blue-800 text-gray-300 hover:bg-blue-900 transition"
 					>
-						Manage Events
+						<Settings className="w-4 h-4" />
+						Manage
 					</Link>
-				</div>
-			)}
-
-			{/* Display events */}
-			{events.length === 0 ? (
-				<p>No events available.</p>
-			) : (
-				<ul className="space-y-4">
-					{events.map((event) => (
-						<li
-							key={event.id}
-							className="p-4 border rounded shadow flex justify-between items-center"
-						>
-							<div>
-								<h2 className="font-semibold">{event.title}</h2>
-								<p className="text-sm text-gray-500">
-									{event.date}
-								</p>
-							</div>
-							<Link
-								href={`/events/${event.id}`}
-								className="text-blue-600 hover:underline"
-							>
-								View
-							</Link>
-						</li>
-					))}
-				</ul>
-			)}
+				)}
+			</div>
+			<EventCards />
 		</div>
 	);
 }

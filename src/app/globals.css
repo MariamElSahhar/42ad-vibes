@@ -3,13 +3,54 @@
 @theme {
 	--background: #171717;
 	--foreground: #ffffff;
-	--color-blue-500: #00e5fc;
-	--color-purple: #7100fe;
-	--color-orange: #ff5042;
+
+	--color-blue-50: #eafffe;
+	--color-blue-100: #cbffff;
+	--color-blue-200: #9efdff;
+	--color-blue-300: #5bf8ff;
+	--color-blue-400: #00e5fc;
+	--color-blue-500: #00cbe5;
+	--color-blue-600: #00a2c0;
+	--color-blue-700: #03809b;
+	--color-blue-800: #0d677d;
+	--color-blue-900: #105569;
+	--color-blue-950: #033849;
+
+	--color-purple-50: #f4f0ff;
+	--color-purple-100: #ebe4ff;
+	--color-purple-200: #dacdff;
+	--color-purple-300: #c0a6ff;
+	--color-purple-400: #a373ff;
+	--color-purple-500: #893bff;
+	--color-purple-600: #7f14ff;
+	--color-purple-700: #7100fe;
+	--color-purple-800: #6001d6;
+	--color-purple-900: #4f03af;
+	--color-purple-950: #300077;
+
+	--color-orange-50: #fff2f1;
+	--color-orange-100: #ffe1df;
+	--color-orange-200: #ffc9c5;
+	--color-orange-300: #ffa49d;
+	--color-orange-400: #ff6f64;
+	--color-orange-500: #ff5042;
+	--color-orange-600: #ed2515;
+	--color-orange-700: #c81b0d;
+	--color-orange-800: #a51a0f;
+	--color-orange-900: #881d14;
+	--color-orange-950: #4b0904;
+
+	--font-display: "Montserrat", "sans-serif";
+
+	--animate-pulse: "pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite";
 }
 
 body {
 	background: var(--background);
 	color: var(--foreground);
-	font-family: Arial, Helvetica, sans-serif;
+	font-family: var(--font-display);
+}
+
+button {
+	cursor: pointer;
 }
