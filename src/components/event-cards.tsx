@@ -80,7 +80,11 @@ export default function EventCards() {
 	}, []);
 
 	if (loading) {
-		return <p className="p-6 text-gray-500">Loading events...</p>;
+		return (
+			<p className="p-6 text-gray-500 w-full text-center">
+				Loading events...
+			</p>
+		);
 	}
 
 	return (
@@ -92,14 +96,14 @@ export default function EventCards() {
 					{events.map((event) => (
 						<li
 							key={event.id}
-							className="relative p-4 rounded-2xl overflow-hidden border border-white/20 backdrop-blur-md bg-white/10 text-white shadow-lg hover:shadow-xl transition-all flex justify-between items-center"
+							className="relative p-4 rounded-2xl overflow-hidden border border-white/20 backdrop-blur-md bg-white/10 text-white shadow-lg hover:shadow-xl transition-all flex flex-col md:flex-row md:justify-between md:items-center gap-4"
 						>
 							<div className="absolute inset-0 -z-10">
 								<div className="absolute w-72 h-72 bg-purple-600 opacity-30 rounded-full blur-3xl top-0 left-0 animate-pulse" />
 								<div className="absolute w-72 h-72 bg-orange-500 opacity-30 rounded-full blur-3xl bottom-0 right-0 animate-pulse delay-200" />
 							</div>
 
-							<div className="flex items-start gap-2">
+							<div className="flex flex-wrap md:flex-nowrap items-center gap-3 justify-between w-full md:w-auto">
 								<div>
 									<Link
 										href={`/events/${event.id}`}

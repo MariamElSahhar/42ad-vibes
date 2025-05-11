@@ -11,6 +11,7 @@ export default function ManageEventsPage() {
 	const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 	const [newEventTitle, setNewEventTitle] = useState("");
 	const [newEventDate, setNewEventDate] = useState("");
+	const [newEventCapacity, setNewEventCapacity] = useState("");
 	const [newEventDescription, setNewEventDescription] = useState("");
 
 	const handleCreateEvent = async () => {
@@ -19,6 +20,7 @@ export default function ManageEventsPage() {
 				title: newEventTitle,
 				date: newEventDate,
 				description: newEventDescription,
+				capacity: newEventCapacity,
 			},
 		]);
 
@@ -29,6 +31,7 @@ export default function ManageEventsPage() {
 			setNewEventTitle("");
 			setNewEventDate("");
 			setNewEventDescription("");
+			setNewEventCapacity("");
 		}
 	};
 
@@ -37,37 +40,40 @@ export default function ManageEventsPage() {
 	};
 
 	return (
-		<div className="p-6 mx-6">
-			<div className="flex items-center justify-between mb-4">
-				<h1 className="text-3xl font-normal">Upcoming Events</h1>
-				<div className="flex gap-2">
+		<div className="p-4 sm:p-6 mx-4 sm:mx-6">
+			<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+				<h1 className="text-2xl sm:text-3xl font-normal text-white">
+					Upcoming Events
+				</h1>
+				<div className="flex flex-col sm:flex-row gap-2">
 					<Link
 						href="/"
-						className="px-3 py-2 rounded bg-white/10 border border-white/30 hover:bg-white/20 transition text-white"
+						className="px-3 py-2 rounded bg-white/10 border border-white/30 hover:bg-white/20 transition text-white text-sm text-center"
 					>
 						Public View
 					</Link>
 					<button
 						onClick={() => setIsCreateModalOpen(true)}
-						className="flex items-center gap-1 px-3 py-2 rounded bg-purple-600/30 border border-purple-700 hover:bg-purple-700 transition text-white"
+						className="flex items-center justify-center gap-1 px-3 py-2 rounded bg-purple-600/30 border border-purple-700 hover:bg-purple-700 transition text-white text-sm"
 					>
 						<Plus className="w-4 h-4" />
 						Add Event
 					</button>
 				</div>
 			</div>
+
 			<EventCards />
 
 			{isCreateModalOpen && (
-				<div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+				<div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
 					<div className="relative bg-white/10 border border-white/20 text-white backdrop-blur-xl rounded-2xl p-6 shadow-2xl max-w-lg w-full overflow-hidden">
 						{/* 💫 Gradient blobs */}
 						<div className="absolute inset-0 -z-10">
-							<div className="absolute w-72 h-72 bg-purple-600 opacity-30 rounded-full blur-3xl top-0 left-0 animate-pulse slow" />
-							<div className="absolute w-72 h-72 bg-orange-500 opacity-30 rounded-full blur-3xl bottom-0 right-0 animate-pulse slow delay-200" />
+							<div className="absolute w-72 h-72 bg-purple-600 opacity-30 rounded-full blur-3xl top-0 left-0 animate-pulse" />
+							<div className="absolute w-72 h-72 bg-orange-500 opacity-30 rounded-full blur-3xl bottom-0 right-0 animate-pulse delay-200" />
 						</div>
 
-						<h2 className="text-2xl font-semibold mb-6">
+						<h2 className="text-xl sm:text-2xl font-semibold mb-6">
 							Create Event
 						</h2>
 
@@ -98,6 +104,22 @@ export default function ManageEventsPage() {
 							className="w-full p-2 mb-4 bg-white/10 border border-white/30 rounded text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
 							value={newEventDate}
 							onChange={(e) => setNewEventDate(e.target.value)}
+						/>
+
+						<label
+							htmlFor="capacity"
+							className="block mb-1 text-sm text-white/80"
+						>
+							Capacity
+						</label>
+						<input
+							type="number"
+							id="capacity"
+							className="w-full p-2 mb-4 bg-white/10 border border-white/30 rounded text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
+							value={newEventCapacity}
+							onChange={(e) =>
+								setNewEventCapacity(e.target.value)
+							}
 						/>
 
 						<label

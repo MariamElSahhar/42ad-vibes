@@ -56,13 +56,15 @@ export default function HomePage() {
 	}, []);
 
 	return (
-		<div className="p-6 mx-6">
-			<div className="flex items-center justify-between mb-4">
-				<h1 className="text-3xl font-normal">Upcoming Events</h1>
+		<div className="p-4 sm:p-6 mx-4 sm:mx-6">
+			<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+				<h1 className="text-2xl sm:text-3xl font-normal text-white">
+					Upcoming Events
+				</h1>
 				{isAdmin && (
 					<Link
 						href="/admin/events"
-						className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md border border-blue-800 text-gray-300 hover:bg-blue-900 transition"
+						className="flex items-center gap-1 text-sm px-3 py-1.5 rounded-md border border-blue-800 text-gray-300 hover:bg-blue-900 transition w-max"
 					>
 						<Settings className="w-4 h-4" />
 						Manage

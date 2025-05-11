@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import { useAuth } from "@/context/AuthContext";
+import { Menu, X } from "lucide-react";
 
 export default function Navbar() {
 	const supabase = createClient();
@@ -46,10 +47,23 @@ export default function Navbar() {
 					href="/"
 					className="text-2xl font-bold tracking-wide hover:text-purple/90 transition"
 				>
-					42AD Vibes
+					42AD Vibes ✨
 				</Link>
 
-				<div className="relative text-sm space-x-4">
+				{/* Hamburger icon (mobile only) */}
+				<button
+					className="md:hidden text-white"
+					onClick={() => setMenuOpen((prev) => !prev)}
+				>
+					{menuOpen ? (
+						<X className="w-6 h-6" />
+					) : (
+						<Menu className="w-6 h-6" />
+					)}
+				</button>
+
+				{/* Desktop menu */}
+				<div className="hidden md:flex items-center gap-4 text-sm">
 					{user ? (
 						<div className="relative inline-block text-left">
 							<button
@@ -66,7 +80,6 @@ export default function Navbar() {
 									xmlns="http://www.w3.org/2000/svg"
 									viewBox="0 0 20 20"
 									fill="currentColor"
-									aria-hidden="true"
 								>
 									<path
 										fillRule="evenodd"
@@ -77,23 +90,13 @@ export default function Navbar() {
 							</button>
 
 							{menuOpen && (
-								<div
-									className="absolute right-0 w-30 rounded-md shadow-lg z-50 opacity-0 transition-opacity duration-300 transform translate-y-2"
-									style={{
-										opacity: menuOpen ? 1 : 0,
-										transform: menuOpen
-											? "translateY(0)"
-											: "translateY(10px)",
-									}}
-								>
-									<div className="absolute right-0 mt-2 w-36 bg-orange-400/90 backdrop-blur-md rounded-md shadow-lg ring-1 ring-white/20 z-50 hover:bg-orange-500/90 transition">
-										<button
-											onClick={handleSignOut}
-											className="block w-full text-left px-4 py-2 text-white transition"
-										>
-											Sign Out
-										</button>
-									</div>
+								<div className="absolute right-0 mt-2 w-36 bg-orange-400/90 backdrop-blur-md rounded-md shadow-lg ring-1 ring-white/20 z-50">
+									<button
+										onClick={handleSignOut}
+										className="block w-full text-left px-4 py-2 text-white hover:bg-orange-500/90 transition"
+									>
+										Sign Out
+									</button>
 								</div>
 							)}
 						</div>
@@ -115,6 +118,40 @@ export default function Navbar() {
 					)}
 				</div>
 			</div>
+
+			{/* Mobile dropdown menu */}
+			{menuOpen && (
+				<div className="md:hidden px-4 pt-4 pb-2 space-y-2 text-sm">
+					{user ? (
+						<>
+							<p className="text-white/80">
+								Hi, {user.user_metadata.username}
+							</p>
+							<button
+								onClick={handleSignOut}
+								className="block w-full text-left px-4 py-2 rounded bg-orange-400/90 text-white hover:bg-orange-500/90 transition"
+							>
+								Sign Out
+							</button>
+						</>
+					) : (
+						<>
+							<Link
+								href="/login"
+								className="block w-full text-left px-4 py-2 rounded bg-purple-600/90 text-white hover:bg-purple-700 transition"
+							>
+								Login
+							</Link>
+							<Link
+								href="/signup"
+								className="block w-full text-left px-4 py-2 rounded border border-purple-600 text-purple-300 hover:bg-purple-600 hover:text-white transition"
+							>
+								Sign Up
+							</Link>
+						</>
+					)}
+				</div>
+			)}
 		</nav>
 	);
 }

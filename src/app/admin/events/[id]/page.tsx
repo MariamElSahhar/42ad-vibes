@@ -80,14 +80,14 @@ export default function AdminEditEventPage() {
 	if (!event) return <p className="p-6 text-red-500">Event not found.</p>;
 
 	return (
-		<div className="flex flex-col items-center justify-start w-full p-6 text-white">
+		<div className="flex flex-col items-center justify-start w-full p-4 sm:p-6 text-white">
 			{/* 💫 Background blobs */}
 			<div className="absolute inset-0 -z-10">
-				<div className="absolute w-96 h-96 bg-purple-600 opacity-30 rounded-full blur-3xl top-0 left-0 animate-pulse slow" />
-				<div className="absolute w-96 h-96 bg-orange-500 opacity-30 rounded-full blur-3xl bottom-0 right-0 animate-pulse slow delay-200" />
+				<div className="absolute w-96 h-96 bg-purple-600 opacity-30 rounded-full blur-3xl top-0 left-0 animate-pulse" />
+				<div className="absolute w-96 h-96 bg-orange-500 opacity-30 rounded-full blur-3xl bottom-0 right-0 animate-pulse delay-200" />
 			</div>
 
-			<div className="bg-white/10 border border-white/20 backdrop-blur-xl rounded-2xl p-6 shadow-2xl w-full max-w-2xl relative">
+			<div className="relative bg-white/10 border border-white/20 backdrop-blur-xl rounded-2xl p-4 sm:p-6 shadow-2xl w-full max-w-2xl">
 				<button
 					onClick={handleDiscard}
 					className="absolute top-4 right-4 text-white/70 hover:text-white transition"
@@ -96,7 +96,9 @@ export default function AdminEditEventPage() {
 					<X className="w-5 h-5" />
 				</button>
 
-				<h1 className="text-2xl font-bold mb-6">Edit Event</h1>
+				<h1 className="text-xl sm:text-2xl font-bold mb-6">
+					Edit Event
+				</h1>
 
 				<div className="space-y-4">
 					<div>
@@ -157,7 +159,7 @@ export default function AdminEditEventPage() {
 						)}
 					</div>
 
-					<div className="flex gap-4 mt-6">
+					<div className="flex flex-col sm:flex-row gap-2 sm:gap-4 mt-6">
 						<button
 							onClick={handleSave}
 							className="bg-purple-600 hover:bg-purple-700 transition px-4 py-2 rounded text-white font-medium"
@@ -172,7 +174,7 @@ export default function AdminEditEventPage() {
 						</button>
 						<button
 							onClick={() => setConfirmOpen(true)}
-							className="ml-auto bg-orange-600 hover:bg-orange-700 transition px-4 py-2 rounded text-white font-medium"
+							className="sm:ml-auto bg-orange-600 hover:bg-orange-700 transition px-4 py-2 rounded text-white font-medium"
 						>
 							Delete
 						</button>
@@ -182,21 +184,21 @@ export default function AdminEditEventPage() {
 
 			{/* 🗑️ Delete confirmation modal */}
 			{confirmOpen && (
-				<div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+				<div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
 					<div className="relative bg-white/10 border border-white/20 text-white backdrop-blur-xl rounded-2xl p-6 shadow-2xl max-w-sm w-full">
 						{/* 💫 Blobs */}
 						<div className="absolute inset-0 -z-10">
-							<div className="absolute w-72 h-72 bg-purple-600 opacity-30 rounded-full blur-3xl top-0 left-0 animate-pulse slow" />
-							<div className="absolute w-72 h-72 bg-orange-500 opacity-30 rounded-full blur-3xl bottom-0 right-0 animate-pulse slow delay-200" />
+							<div className="absolute w-72 h-72 bg-purple-600 opacity-30 rounded-full blur-3xl top-0 left-0 animate-pulse" />
+							<div className="absolute w-72 h-72 bg-orange-500 opacity-30 rounded-full blur-3xl bottom-0 right-0 animate-pulse delay-200" />
 						</div>
 
-						<h2 className="text-xl font-semibold mb-4">
+						<h2 className="text-lg sm:text-xl font-semibold mb-4">
 							Confirm Deletion
 						</h2>
 						<p className="mb-4 text-white/80">
 							Are you sure you want to delete this event?
 						</p>
-						<div className="flex justify-end gap-4">
+						<div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-4">
 							<button
 								onClick={() => setConfirmOpen(false)}
 								className="px-4 py-2 bg-white/10 border border-white/30 rounded hover:bg-white/20 text-white"

@@ -102,7 +102,11 @@ export default function EventDetailsPage() {
 	};
 
 	if (loading) {
-		return <p className="p-6 text-gray-500">Loading event...</p>;
+		return (
+			<p className="p-6 text-gray-50 w-full text-center">
+				Loading event...
+			</p>
+		);
 	}
 
 	if (!event) {
@@ -125,7 +129,9 @@ export default function EventDetailsPage() {
 			</Link>
 
 			<div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl p-6 space-y-4">
-				<h1 className="text-3xl font-bold text-white">{event.title}</h1>
+				<h1 className="text-xl sm:text-3xl font-bold text-white">
+					{event.title}
+				</h1>
 				<p className="text-white/80 text-sm flex items-center gap-1">
 					<Calendar className="w-4 h-4" />
 					{event.date}
