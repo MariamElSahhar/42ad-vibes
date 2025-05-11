@@ -38,7 +38,7 @@ export default function Navbar() {
 
 	return (
 		<nav
-			className="bg-blue-900/10 backdrop-blur-md border-b border-white/10 text-white sticky top-0 z-50 shadow-sm py-5"
+			className="bg-blue-900/10 backdrop-blur-md border-b border-white/10 text-white sticky top-0 z-50 shadow-sm py-3"
 			ref={menuRef}
 		>
 			<div className="container mx-auto flex justify-between items-center px-4">

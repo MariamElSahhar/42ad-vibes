@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { redirect, useParams } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import { Event } from "@/types/types";
+import { X } from "lucide-react";
 
 export default function AdminEditEventPage() {
 	const { id } = useParams<{ id: string }>();
@@ -13,6 +14,9 @@ export default function AdminEditEventPage() {
 	const [title, setTitle] = useState("");
 	const [date, setDate] = useState("");
 	const [description, setDescription] = useState("");
+	const [capacity, setCapacity] = useState(0);
+	const [rsvpCount, setRsvpCount] = useState(0);
+	const [capacityError, setCapacityError] = useState("");
 	const [loading, setLoading] = useState(true);
 	const [confirmOpen, setConfirmOpen] = useState(false);
 
@@ -29,6 +33,14 @@ export default function AdminEditEventPage() {
 				setTitle(data.title);
 				setDate(data.date);
 				setDescription(data.description ?? "");
+				setCapacity(data.capacity);
+
+				const { count } = await supabase
+					.from("rsvps")
+					.select("*", { count: "exact", head: true })
+					.eq("event_id", id);
+
+				setRsvpCount(count ?? 0);
 			}
 
 			setLoading(false);
@@ -38,9 +50,18 @@ export default function AdminEditEventPage() {
 	}, [id, supabase]);
 
 	const handleSave = async () => {
+		if (capacity < rsvpCount) {
+			setCapacityError(
+				`Capacity cannot be less than current RSVPs (${rsvpCount}).`
+			);
+			return;
+		} else {
+			setCapacityError("");
+		}
+
 		await supabase
 			.from("events")
-			.update({ title, date, description })
+			.update({ title, date, description, capacity })
 			.eq("id", id);
 
 		redirect(`/events/${id}`);
@@ -59,14 +80,22 @@ export default function AdminEditEventPage() {
 	if (!event) return <p className="p-6 text-red-500">Event not found.</p>;
 
 	return (
-		<div className="relative p-6 max-w-4xl mx-auto text-white">
+		<div className="flex flex-col items-center justify-start w-full p-6 text-white">
 			{/* 💫 Background blobs */}
 			<div className="absolute inset-0 -z-10">
 				<div className="absolute w-96 h-96 bg-purple-600 opacity-30 rounded-full blur-3xl top-0 left-0 animate-pulse slow" />
 				<div className="absolute w-96 h-96 bg-orange-500 opacity-30 rounded-full blur-3xl bottom-0 right-0 animate-pulse slow delay-200" />
 			</div>
 
-			<div className="bg-white/10 border border-white/20 backdrop-blur-xl rounded-2xl p-6 shadow-2xl">
+			<div className="bg-white/10 border border-white/20 backdrop-blur-xl rounded-2xl p-6 shadow-2xl w-full max-w-2xl relative">
+				<button
+					onClick={handleDiscard}
+					className="absolute top-4 right-4 text-white/70 hover:text-white transition"
+					title="Discard and go back"
+				>
+					<X className="w-5 h-5" />
+				</button>
+
 				<h1 className="text-2xl font-bold mb-6">Edit Event</h1>
 
 				<div className="space-y-4">
@@ -86,7 +115,7 @@ export default function AdminEditEventPage() {
 						<label className="block text-white/80 mb-1">Date</label>
 						<input
 							type="date"
-							className="w-full p-2 bg-white/10 border border-white/30 rounded text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+							className="w-full p-2 bg-white/10 border border-white/30 rounded text-white [&::-webkit-calendar-picker-indicator]:invert focus:outline-none focus:ring-2 focus:ring-purple-500"
 							value={date}
 							onChange={(e) => setDate(e.target.value)}
 						/>
@@ -103,6 +132,29 @@ export default function AdminEditEventPage() {
 							onChange={(e) => setDescription(e.target.value)}
 							placeholder="What is this event about?"
 						/>
+					</div>
+
+					<div>
+						<label className="block text-white/80 mb-1">
+							Capacity
+						</label>
+						<input
+							type="number"
+							min={rsvpCount}
+							className="w-full p-2 bg-white/10 border border-white/30 rounded text-white focus:outline-none focus:ring-2 focus:ring-purple-500 [&::-webkit-inner-spin-button]:accent-purple-500"
+							value={capacity}
+							onChange={(e) =>
+								setCapacity(parseInt(e.target.value))
+							}
+						/>
+						<p className="text-sm text-white/60 mt-1">
+							Current RSVPs: {rsvpCount}
+						</p>
+						{capacityError && (
+							<p className="text-sm text-red-400 mt-1">
+								{capacityError}
+							</p>
+						)}
 					</div>
 
 					<div className="flex gap-4 mt-6">
