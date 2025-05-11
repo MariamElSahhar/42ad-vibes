@@ -1,6 +1,5 @@
 "use client";
 
-import slugify from 'slugify';
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/client";
@@ -45,7 +44,7 @@ export default function ManageEventsPage() {
 		};
 
 		fetchData();
-	}, []);
+	}, [supabase]);
 
 	const handleCreateEvent = async () => {
 		// Create event in the database
