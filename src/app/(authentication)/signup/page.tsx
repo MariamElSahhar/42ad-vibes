@@ -8,6 +8,8 @@ export default function SignUpPage() {
 	const supabase = createClient();
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [confirmPassword, setConfirmPassword] = useState("");
+	const [username, setUsername] = useState("");
 	const [errorMsg, setErrorMsg] = useState("");
 	const [loading, setLoading] = useState(false);
 
@@ -16,13 +18,22 @@ export default function SignUpPage() {
 		setLoading(true);
 		setErrorMsg("");
 
-		const { error } = await supabase.auth.signUp({
+		if (password !== confirmPassword) {
+			setErrorMsg("Passwords do not match");
+			setLoading(false);
+			return;
+		}
+
+		const { error: authError } = await supabase.auth.signUp({
 			email,
 			password,
+			options: {
+				data: { username },
+			},
 		});
 
-		if (error) {
-			setErrorMsg(error.message);
+		if (authError) {
+			setErrorMsg(authError.message);
 			setLoading(false);
 			return;
 		}
@@ -35,6 +46,19 @@ export default function SignUpPage() {
 			<h1 className="text-2xl font-bold mb-4">Sign Up</h1>
 
 			<form onSubmit={handleSignUp} className="space-y-4">
+				<div>
+					<label className="block text-sm font-medium mb-1">
+						Username
+					</label>
+					<input
+						type="text"
+						required
+						value={username}
+						onChange={(e) => setUsername(e.target.value)}
+						className="w-full px-3 py-2 border rounded-md"
+					/>
+				</div>
+
 				<div>
 					<label className="block text-sm font-medium mb-1">
 						Email
@@ -57,6 +81,19 @@ export default function SignUpPage() {
 						required
 						value={password}
 						onChange={(e) => setPassword(e.target.value)}
+						className="w-full px-3 py-2 border rounded-md"
+					/>
+				</div>
+
+				<div>
+					<label className="block text-sm font-medium mb-1">
+						Confirm Password
+					</label>
+					<input
+						type="password"
+						required
+						value={confirmPassword}
+						onChange={(e) => setConfirmPassword(e.target.value)}
 						className="w-full px-3 py-2 border rounded-md"
 					/>
 				</div>
