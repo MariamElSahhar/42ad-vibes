@@ -1,43 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { createClient } from "@/utils/supabase/client";
+import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { createClient } from "@/utils/supabase/client";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Navbar() {
 	const supabase = createClient();
-
 	const router = useRouter();
-	const [userEmail, setUserEmail] = useState<string | null>(null);
-	const [role, setRole] = useState<string | null>(null);
+	const { user } = useAuth();
+
 	const [menuOpen, setMenuOpen] = useState(false);
-
-	useEffect(() => {
-		const getUserData = async () => {
-			const { data: authData } = await supabase.auth.getUser();
-			const user = authData.user;
-			setUserEmail(user?.email ?? null);
-
-			if (user) {
-				const { data: roles } = await supabase
-					.from("roles")
-					.select("role")
-					.eq("id", user.id)
-					.single();
-
-				setRole(roles?.role ?? null);
-			}
-		};
-
-		getUserData();
-	}, []);
+	
 
 	const handleSignOut = async () => {
 		await supabase.auth.signOut();
-		setUserEmail(null);
-		setRole(null);
-		router.refresh();
+		setMenuOpen(false);
+		router.push("/");
 	};
 
 	return (
@@ -48,25 +28,17 @@ export default function Navbar() {
 				</Link>
 
 				<div className="relative text-sm space-x-4">
-					{userEmail ? (
+					{user ? (
 						<div className="relative inline-block text-left">
 							<button
 								onClick={() => setMenuOpen((prev) => !prev)}
 								className="px-3 py-2 bg-white rounded-md shadow hover:bg-gray-100"
 							>
-								Hi, {userEmail}
+								Hi, {user.email}
 							</button>
 
 							{menuOpen && (
 								<div className="absolute right-0 mt-2 w-44 bg-white border rounded-md shadow-lg z-50">
-									{role === "admin" && (
-										<Link
-											href="/admin"
-											className="block px-4 py-2 hover:bg-gray-100"
-										>
-											Admin Dashboard
-										</Link>
-									)}
 									<button
 										onClick={handleSignOut}
 										className="block w-full text-left px-4 py-2 hover:bg-gray-100"

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/navbar";
+import { AuthProvider } from "@/context/AuthContext";
 
 export const metadata: Metadata = {
 	title: "42 Abu Dhabi Vibes",
@@ -15,11 +16,13 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body>
-				<Navbar />
-				<main className="vh-full">{children}</main>
-				<footer className="bg-gray-100 text-center py-4 mt-8 text-sm text-gray-500">
-					Created by Mariam ✨
-				</footer>
+				<AuthProvider>
+					<Navbar />
+					<main className="vh-full">{children}</main>
+					<footer className="bg-gray-100 text-center py-4 mt-8 text-sm text-gray-500">
+						Created by Mariam ✨
+					</footer>
+				</AuthProvider>
 			</body>
 		</html>
 	);

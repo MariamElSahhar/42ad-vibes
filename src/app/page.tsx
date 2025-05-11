@@ -6,14 +6,14 @@ import { createClient } from "@/utils/supabase/client";
 import { Event } from "@/types/types";
 
 export default function HomePage() {
-	const supabase = createClient();
 	const [events, setEvents] = useState<Event[]>([]);
 	const [isAdmin, setIsAdmin] = useState(false);
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
+		const supabase = createClient();
+
 		const fetchData = async () => {
-			// Get the session and check if the user is an admin
 			const {
 				data: { session },
 			} = await supabase.auth.getSession();
@@ -27,9 +27,10 @@ export default function HomePage() {
 					.single();
 
 				setIsAdmin(roleData?.role === "admin");
+			} else {
+				setIsAdmin(false);
 			}
 
-			// Fetch the events for the homepage
 			const { data: eventData } = await supabase
 				.from("events")
 				.select("*")
@@ -40,6 +41,28 @@ export default function HomePage() {
 		};
 
 		fetchData();
+
+		// 🔁 Listen for auth state changes
+		const { data: authListener } = supabase.auth.onAuthStateChange(
+			(event, session) => {
+				if (event === "SIGNED_OUT") {
+					setIsAdmin(false);
+				} else if (event === "SIGNED_IN" && session?.user) {
+					supabase
+						.from("roles")
+						.select("role")
+						.eq("id", session.user.id)
+						.single()
+						.then(({ data }) => {
+							setIsAdmin(data?.role === "admin");
+						});
+				}
+			}
+		);
+
+		return () => {
+			authListener?.subscription.unsubscribe();
+		};
 	}, []);
 
 	if (loading) {

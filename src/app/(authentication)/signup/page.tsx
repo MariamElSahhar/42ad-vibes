@@ -1,12 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { redirect, usePathname } from "next/navigation";
+import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 
 export default function SignUpPage() {
-	const origin = usePathname();
-	console.log(origin);
 	const supabase = createClient();
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
