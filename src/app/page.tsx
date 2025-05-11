@@ -13,10 +13,10 @@ export default function HomePage() {
 
 	useEffect(() => {
 		const fetchData = async () => {
+			// Get the session and check if the user is an admin
 			const {
 				data: { session },
 			} = await supabase.auth.getSession();
-
 			const user = session?.user;
 
 			if (user) {
@@ -29,26 +29,42 @@ export default function HomePage() {
 				setIsAdmin(roleData?.role === "admin");
 			}
 
-			const { data: eventsData } = await supabase
+			// Fetch the events for the homepage
+			const { data: eventData } = await supabase
 				.from("events")
 				.select("*")
 				.order("date");
 
-			if (eventsData) setEvents(eventsData);
+			setEvents(eventData ?? []);
 			setLoading(false);
 		};
 
 		fetchData();
 	}, []);
 
+	if (loading) {
+		return <p className="p-6 text-gray-500">Loading events...</p>;
+	}
+
 	return (
 		<div className="p-6 max-w-4xl mx-auto">
 			<h1 className="text-3xl font-bold mb-4">Upcoming Events</h1>
 
-			{loading ? (
-				<p className="text-gray-500">Loading events...</p>
-			) : events.length === 0 ? (
-				<p className="text-gray-500">No events found.</p>
+			{/* Admin-only "Manage Events" button */}
+			{isAdmin && (
+				<div className="mb-4">
+					<Link
+						href="/admin/events"
+						className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+					>
+						Manage Events
+					</Link>
+				</div>
+			)}
+
+			{/* Display events */}
+			{events.length === 0 ? (
+				<p>No events available.</p>
 			) : (
 				<ul className="space-y-4">
 					{events.map((event) => (
@@ -62,22 +78,12 @@ export default function HomePage() {
 									{event.date}
 								</p>
 							</div>
-							<div className="flex gap-4">
-								<Link
-									href={`/events/${event.id}`}
-									className="text-blue-600 hover:underline"
-								>
-									View
-								</Link>
-								{isAdmin && (
-									<Link
-										href={`/admin/events/${event.id}`}
-										className="text-yellow-600 hover:underline"
-									>
-										Manage
-									</Link>
-								)}
-							</div>
+							<Link
+								href={`/events/${event.id}`}
+								className="text-blue-600 hover:underline"
+							>
+								View
+							</Link>
 						</li>
 					))}
 				</ul>

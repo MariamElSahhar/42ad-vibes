@@ -1,20 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/client";
 import { Event } from "@/types/types";
 
 export default function EventDetailsPage() {
 	const { id } = useParams<{ id: string }>();
-	const supabase = createClient();
 	const [event, setEvent] = useState<Event | null>(null);
 	const [isAdmin, setIsAdmin] = useState(false);
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		const fetchData = async () => {
+			const supabase = createClient();
 			const {
 				data: { session },
 			} = await supabase.auth.getSession();

@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 
 export default function LoginPage() {
+	const origin = usePathname();
+	console.log(origin);
 	const supabase = createClient();
-	const router = useRouter();
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [errorMsg, setErrorMsg] = useState("");
@@ -26,7 +27,7 @@ export default function LoginPage() {
 			setErrorMsg(error.message);
 			setLoading(false);
 		} else {
-			router.push("/");
+			redirect("/");
 		}
 	};
 

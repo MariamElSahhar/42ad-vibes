@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 
 export default function SignUpPage() {
+	const origin = usePathname();
+	console.log(origin);
 	const supabase = createClient();
-	const router = useRouter();
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [errorMsg, setErrorMsg] = useState("");
@@ -17,7 +18,7 @@ export default function SignUpPage() {
 		setLoading(true);
 		setErrorMsg("");
 
-		const { data, error } = await supabase.auth.signUp({
+		const { error } = await supabase.auth.signUp({
 			email,
 			password,
 		});
@@ -28,22 +29,7 @@ export default function SignUpPage() {
 			return;
 		}
 
-		const userId = data.user?.id;
-		if (userId) {
-			const res = await fetch("/api/create-profile", {
-				method: "POST",
-				body: JSON.stringify({ id: userId }),
-				headers: { "Content-Type": "application/json" },
-			});
-
-			if (!res.ok) {
-				setErrorMsg("Failed to create profile");
-				setLoading(false);
-				return;
-			}
-		}
-
-		router.push("/");
+		redirect("/");
 	};
 
 	return (

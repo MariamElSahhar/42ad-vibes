@@ -1,14 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { redirect, useParams } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import { Event } from "@/types/types";
 
 export default function AdminEditEventPage() {
 	const { id } = useParams<{ id: string }>();
 	const supabase = createClient();
-	const router = useRouter();
 
 	const [event, setEvent] = useState<Event | null>(null);
 	const [title, setTitle] = useState("");
@@ -36,7 +35,7 @@ export default function AdminEditEventPage() {
 		};
 
 		fetchEvent();
-	}, [id]);
+	}, [id, supabase]);
 
 	const handleSave = async () => {
 		await supabase
@@ -44,16 +43,16 @@ export default function AdminEditEventPage() {
 			.update({ title, date, description })
 			.eq("id", id);
 
-		router.push(`/events/${id}`);
+		redirect(`/events/${id}`);
 	};
 
 	const handleDiscard = () => {
-		router.push(`/events/${id}`);
+		redirect(`/events/${id}`);
 	};
 
 	const handleDeleteConfirmed = async () => {
 		await supabase.from("events").delete().eq("id", id);
-		router.push("/");
+		redirect("/");
 	};
 
 	if (loading) return <p className="p-6 text-gray-500">Loading editor...</p>;
