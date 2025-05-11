@@ -18,14 +18,12 @@ An event management platform with public and admin views. Developed for the Fron
 
 ## 🚀 Getting Started
 
-````bash
+```bash
 git clone https://github.com/your-username/eventhub.git
 cd eventhub
 pnpm install
-pnpm dev```
-````
-
-``
+pnpm dev
+```
 
 ## 🔐 Admin Access
 To access the admin dashboard, contact me directly for credentials.
