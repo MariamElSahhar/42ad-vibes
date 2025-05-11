@@ -58,6 +58,12 @@ export default function SignUpPage() {
 
 	return (
 		<div className="flex flex-col flex-1 justify-center items-center w-full h-full px-4 py-8">
+			<div className="absolute -z-10 inset-0 overflow-hidden">
+				<div className="absolute w-180 h-180 bg-purple-600 opacity-20 rounded-full blur-3xl top-0 -left-20 animate-pulse" />
+				<div className="absolute w-150 h-150 bg-orange-500 opacity-20 rounded-full blur-3xl bottom-0 -right-20 animate-pulse delay-200" />
+				<div className="absolute w-60 h-60 bg-blue-500 opacity-10 rounded-full blur-2xl bottom-0 left-100 animate-pulse delay-300" />
+			</div>
+
 			<div className="w-full max-w-md p-8 rounded-2xl backdrop-blur-md bg-white/5 shadow-2xl border border-white/10">
 				<h1 className="text-3xl  font-medium text-white text-center mb-6">
 					Create Account 🚀

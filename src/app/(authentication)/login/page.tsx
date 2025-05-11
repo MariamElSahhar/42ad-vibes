@@ -49,6 +49,12 @@ export default function LoginPage() {
 
 	return (
 		<div className="flex-1 flex flex-col justify-center items-center w-full px-4 py-8 max-w-4xl mx-auto">
+			<div className="absolute -z-10 inset-0 overflow-hidden">
+				<div className="absolute w-180 h-180 bg-purple-600 opacity-20 rounded-full blur-3xl top-0 -left-20 animate-pulse" />
+				<div className="absolute w-150 h-150 bg-orange-500 opacity-20 rounded-full blur-3xl bottom-0 -right-20 animate-pulse delay-200" />
+				<div className="absolute w-60 h-60 bg-blue-500 opacity-10 rounded-full blur-2xl bottom-0 left-100 animate-pulse delay-300" />
+			</div>
+
 			<div className="w-full max-w-md bg-white/5 border border-white/10 backdrop-blur-md text-white rounded-2xl p-8 shadow-xl">
 				<h1 className="text-3xl font-medium text-center mb-6 text-white">
 					Welcome Back 💫
@@ -61,7 +67,7 @@ export default function LoginPage() {
 						</label>
 						<input
 							type="text"
-							className="w-full bg-black border border-white/10 px-3 py-2 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+							className="w-full px-3 py-2 rounded-md bg-white/10 text-white border border-white/20 focus:outline-none focus:ring-2 focus:ring-blue-500"
 							value={email}
 							onChange={(e) => setEmail(e.target.value)}
 						/>
@@ -73,7 +79,7 @@ export default function LoginPage() {
 						</label>
 						<input
 							type="password"
-							className="w-full bg-black border border-white/10 px-3 py-2 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+							className="w-full px-3 py-2 rounded-md bg-white/10 text-white border border-white/20 focus:outline-none focus:ring-2 focus:ring-blue-500"
 							value={password}
 							onChange={(e) => setPassword(e.target.value)}
 						/>
