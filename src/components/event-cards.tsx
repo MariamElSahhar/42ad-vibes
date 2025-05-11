@@ -38,6 +38,19 @@ export default function EventCards() {
 				.select("*")
 				.order("date");
 
+			if (eventData) {
+				await Promise.all(
+					eventData.map(async (event) => {
+						const { count } = await supabase
+							.from("rsvps")
+							.select("*", { count: "exact", head: true })
+							.eq("event_id", event.id);
+
+						event.rsvps = count ?? 0;
+					})
+				);
+			}
+
 			setEvents(eventData ?? []);
 			setLoading(false);
 		};
@@ -107,7 +120,8 @@ export default function EventCards() {
 
 							<div className="flex items-center gap-3">
 								<div className="text-sm text-gray-400 font-medium whitespace-nowrap flex items-center gap-1">
-									1/30 <Users className="w-4 h-4" />
+									{event.rsvps}/{event.capacity}
+									<Users className="w-4 h-4" />
 								</div>
 								{isAdmin && isAdminPage && (
 									<Link

@@ -22,8 +22,17 @@ export default function RootLayout({
 					<main className="flex-1 flex flex-col min-h-full h-full px-4 sm:px-8">
 						{children}
 					</main>
-					<footer className="text-center py-4 mt-8 text-sm backdrop-blur-sm bg-purple/100 border-t border-white/10 shadow-inner">
-						Created by Mariam ✨
+					<footer className="text-center py-4 mt-8 text-sm text-white/60 backdrop-blur-sm bg-purple/100 border-t border-white/10 shadow-inner">
+						Vibe coded by{" "}
+						<a
+							className="hover:underline cursor-pointer"
+							target="_blank"
+							rel="noopener noreferrer"
+							href="http://github.com/MariamElSahhar/42ad-vibes/"
+						>
+							Mariam ElSahhar
+						</a>{" "}
+						✨
 					</footer>
 				</AuthProvider>
 			</body>

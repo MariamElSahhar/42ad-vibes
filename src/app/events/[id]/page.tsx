@@ -6,21 +6,18 @@ import Link from "next/link";
 import { createClient } from "@/utils/supabase/client";
 import { Event } from "@/types/types";
 import { Calendar } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 
 export default function EventDetailsPage() {
 	const { id } = useParams<{ id: string }>();
+	const supabase = createClient();
 	const [event, setEvent] = useState<Event | null>(null);
 	const [isAdmin, setIsAdmin] = useState(false);
 	const [loading, setLoading] = useState(true);
+	const { user } = useAuth();
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const supabase = createClient();
-			const {
-				data: { session },
-			} = await supabase.auth.getSession();
-			const user = session?.user;
-
 			if (user) {
 				const { data: roleData } = await supabase
 					.from("roles")
@@ -42,7 +39,25 @@ export default function EventDetailsPage() {
 		};
 
 		fetchData();
-	}, [id]);
+	}, [id, supabase, user]);
+
+	// const handleRSVP = async () => {
+	// 	if (!user) {
+	// 		alert("You must be logged in to RSVP.");
+	// 		return;
+	// 	}
+
+	// 	const { error } = await supabase.from("rsvps").insert({
+	// 		user_id: user.id,
+	// 		event_id: id,
+	// 	});
+
+	// 	if (error) {
+	// 		console.error("RSVP failed:", error);
+	// 	} else {
+	// 		console.log("RSVP successful");
+	// 	}
+	// };
 
 	if (loading) {
 		return <p className="p-6 text-gray-500">Loading event...</p>;

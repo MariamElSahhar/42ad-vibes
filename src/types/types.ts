@@ -3,4 +3,6 @@ export interface Event {
 	title: string;
 	date: string;
 	description: string;
+	capacity: number;
+	rsvps: number;
 }
