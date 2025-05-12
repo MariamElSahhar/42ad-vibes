@@ -15,6 +15,7 @@ export default function EventCards() {
 
 	useEffect(() => {
 		const supabase = createClient();
+		const today = new Date().toISOString().split("T")[0];
 		const fetchData = async () => {
 			const {
 				data: { session },
@@ -36,6 +37,7 @@ export default function EventCards() {
 			const { data: eventData } = await supabase
 				.from("events")
 				.select("*")
+				.gte("date", today)
 				.order("date");
 
 			if (eventData) {

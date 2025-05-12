@@ -13,8 +13,20 @@ export default function ManageEventsPage() {
 	const [newEventDate, setNewEventDate] = useState("");
 	const [newEventCapacity, setNewEventCapacity] = useState("");
 	const [newEventDescription, setNewEventDescription] = useState("");
+	const [createError, setCreateError] = useState("");
+	const [refreshKey, setRefreshKey] = useState(0);
 
 	const handleCreateEvent = async () => {
+		if (
+			!newEventTitle.trim() ||
+			!newEventDate ||
+			!newEventDescription.trim() ||
+			!newEventCapacity
+		) {
+			setCreateError("Please fill in all fields.");
+			return;
+		}
+
 		const { error } = await supabase.from("events").insert([
 			{
 				title: newEventTitle,
@@ -25,13 +37,15 @@ export default function ManageEventsPage() {
 		]);
 
 		if (error) {
-			console.error("Error creating event:", error);
+			setCreateError("Failed to create event. Please try again.");
 		} else {
 			setIsCreateModalOpen(false);
 			setNewEventTitle("");
 			setNewEventDate("");
 			setNewEventDescription("");
 			setNewEventCapacity("");
+			setCreateError("");
+			setRefreshKey((prev) => prev + 1);
 		}
 	};
 
@@ -62,7 +76,7 @@ export default function ManageEventsPage() {
 				</div>
 			</div>
 
-			<EventCards />
+			<EventCards key={refreshKey} />
 
 			{isCreateModalOpen && (
 				<div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
@@ -101,6 +115,7 @@ export default function ManageEventsPage() {
 						<input
 							type="date"
 							id="date"
+							min={new Date().toISOString().split("T")[0]}
 							className="w-full p-2 mb-4 bg-white/10 border border-white/30 rounded text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500"
 							value={newEventDate}
 							onChange={(e) => setNewEventDate(e.target.value)}
@@ -131,13 +146,19 @@ export default function ManageEventsPage() {
 						<textarea
 							id="description"
 							rows={3}
-							className="w-full p-2 mb-6 bg-white/10 border border-white/30 rounded text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
+							className="w-full p-2 mb-4 bg-white/10 border border-white/30 rounded text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
 							placeholder="Event description..."
 							value={newEventDescription}
 							onChange={(e) =>
 								setNewEventDescription(e.target.value)
 							}
 						/>
+
+						{createError && (
+							<p className="text-sm text-orange-200 bg-orange-950/80 p-2 rounded my-2">
+								{createError}
+							</p>
+						)}
 
 						<div className="flex justify-end gap-2">
 							<button

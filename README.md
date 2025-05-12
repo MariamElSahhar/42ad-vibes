@@ -7,6 +7,7 @@ An event management platform with public and admin views. Developed for the Fron
 -   🔍 Public event listing
 -   🔐 Admin dashboard with event CRUD
 -   🧠 Supabase role-based access
+-	🎫 Event RSVP and cancellation
 
 ## 🧰 Tech Stack
 

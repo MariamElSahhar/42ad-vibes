@@ -43,6 +43,11 @@ export default function EventDetailsPage() {
 				.eq("id", id)
 				.single();
 
+			if (!data) {
+				setLoading(false);
+				return;
+			}
+
 			const { count } = await supabase
 				.from("rsvps")
 				.select("*", { count: "exact", head: true })
@@ -109,9 +114,20 @@ export default function EventDetailsPage() {
 		);
 	}
 
-	if (!event) {
-		return <p className="p-6 text-red-500">Event not found.</p>;
-	}
+	if (!event)
+		return (
+			<>
+				<p className="pt-8  w-full text-center text-orange-400">
+					Event not found.
+				</p>
+				<Link
+					href="/"
+					className="text-sm underline text-white/70 hover:text-white transition w-full text-center"
+				>
+					Back to Events
+				</Link>
+			</>
+		);
 
 	return (
 		<div className="relative p-6 max-w-4xl mx-auto text-white">

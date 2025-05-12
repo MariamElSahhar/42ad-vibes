@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { redirect, useParams } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import { Event } from "@/types/types";
-import { X } from "lucide-react";
+import { X, ArrowLeft } from "lucide-react";
+import Link from "next/link";
 
 export default function AdminEditEventPage() {
 	const { id } = useParams<{ id: string }>();
@@ -73,11 +74,29 @@ export default function AdminEditEventPage() {
 
 	const handleDeleteConfirmed = async () => {
 		await supabase.from("events").delete().eq("id", id);
-		redirect("/");
+		redirect("/admin/events/");
 	};
 
-	if (loading) return <p className="p-6 text-gray-500">Loading editor...</p>;
-	if (!event) return <p className="p-6 text-red-500">Event not found.</p>;
+	if (loading)
+		return (
+			<p className="p-6 w-full text-center text-gray-500">
+				Loading editor...
+			</p>
+		);
+	if (!event)
+		return (
+			<>
+				<p className="pt-8  w-full text-center text-orange-400 ">
+					Event not found.
+				</p>
+				<Link
+					href="/"
+					className="text-sm underline text-white/70 hover:text-white transition w-full text-center"
+				>
+					Back to Events
+				</Link>
+			</>
+		);
 
 	return (
 		<div className="flex flex-col items-center justify-start w-full p-4 sm:p-6 text-white">
