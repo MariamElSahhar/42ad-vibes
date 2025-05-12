@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { redirect, useParams } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import { Event } from "@/types/types";
-import { X, ArrowLeft } from "lucide-react";
+import { X } from "lucide-react";
 import Link from "next/link";
 
 export default function AdminEditEventPage() {
